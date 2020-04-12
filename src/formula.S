@@ -45,3 +45,4 @@ factorial:
   .factorial_exit:
   mov r0, r1
   pop { pc }
+

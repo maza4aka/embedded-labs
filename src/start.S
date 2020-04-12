@@ -20,7 +20,7 @@ vtable:
 .type __hard_reset__, %function
 
 __hard_reset__:
-  // initialise stack here
+  // first .word from vtable is used by sp on startup
   ldr sp, =__stack_start
   bl main
   b __hard_reset__
@@ -35,3 +35,4 @@ main:
     b _loop_
   pop { pc }
   .size main, .-main
+
