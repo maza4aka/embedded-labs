@@ -19,7 +19,10 @@ _start: // _start must be the first thing in .text section
   ldr r1, =hello
   bl print_asciz
 
-  bl test_formula
+  bl test_formula // result is returned in r0
+
+  /* mov r0, #0xA09F // test that hex decoding below works well, I guess? */
+  bl print_accumulator // prints r0 hex contents
 
   ldr r1, =bye
   bl print_asciz
