@@ -1,5 +1,5 @@
 /*
- * linker script (for STM32)
+ * bootloader linker script for STM32
  */
 
 MEMORY
@@ -10,3 +10,22 @@ MEMORY
 }
 
 __stack_start = ORIGIN(SRAM) + LENGTH(SRAM);
+
+__ram_start = ORIGIN(SRAM);
+/* __ram_end = ORIGIN(SRAM) + LENGTH(SRAM); */
+
+SECTIONS
+{
+  .text : {
+	  . = ALIGN(4);
+	  KEEP("out/start.o"(.interrupt_vector))
+
+	  /* *(.text) */
+	  *(.text*)
+	  /* *(.rodata) */
+	  *(.rodata*)
+
+	  /* . = ALIGN(4); */
+	  
+  } > FLASH
+}

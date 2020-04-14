@@ -1,9 +1,39 @@
 .syntax unified
+.cpu cortex-m4
+// .fpu softvfp
+
+#define SUCCESS #0
+
+.thumb
+
+
+.globl _start
+
+.section .text
+
+.type _start, %function
+
+_start: // _start must be the first thing in .text section
+  push { lr }
+
+  ldr r1, =hello
+  bl print_asciz
+
+  bl test_formula
+
+  ldr r1, =bye
+  bl print_asciz
+
+  mov r0, SUCCESS
+
+  pop { pc }
+  .size _start, .-_start
+
 
 // (a + b)/2 + c!
-.global test_formula
+// .global test_formula
 
-// constants
+// defining some constants
 #define _a 6
 #define _b 6
 #define _c 6
@@ -12,9 +42,11 @@
 
 test_formula:
   push { lr }
+
   // calculating c!
   mov r0, _c
   bl factorial
+
   // saving factorial result
   push { r0 }
 
@@ -28,13 +60,17 @@ test_formula:
   // calculating (a + b)/2 + c!
   pop { r1 }
   add r0, r0, r1
+
   // return result in r0
+
   pop { pc }
+  .size test_formula, .-test_formula
 
 .type factorial, %function
 
 factorial:
   push { lr }
+
   mov r1, #1
   .factorial_loop:
     cmp r0, 0
@@ -44,5 +80,17 @@ factorial:
     b .factorial_loop
   .factorial_exit:
   mov r0, r1
-  pop { pc }
 
+  pop { pc }
+  .size factorial, .-factorial
+
+
+.section .rodata
+
+/*
+ * some strings
+ */
+hello: .asciz "main procedure started.\n"
+bye: .asciz "main procedure finished!\n"
+
+.end
